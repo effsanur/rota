@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final TextEditingController _startController = TextEditingController();
+  final TextEditingController _endController = TextEditingController();
+  final logger = Logger();
+
+  void _createRoute() {
+    final startCity = _startController.text;
+    final endCity = _endController.text;
+    // Burada rota oluşturma işlemini başlatabilirsiniz (API çağrısı vs.)
+    logger.i('Başlangıç: $startCity, Varış: $endCity');
+    // Sonuçları ekranda gösterebilirsiniz.
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +30,7 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, top: 24.0),
           child: Text(
             'Rotanızı Oluşturun',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         const SizedBox(height: 24),
@@ -23,53 +38,54 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Color(0xFFF5F6FA),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Icon(Icons.circle, color: Colors.green, size: 12),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      'Konumum',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
+              TextField(
+                controller: _startController,
+                decoration: InputDecoration(
+                  labelText: 'Başlangıç Noktası',
+                  prefixIcon: Icon(Icons.circle, color: Colors.green, size: 16),
+                  filled: true,
+                  fillColor: Color(0xFFF5F6FA),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
-              Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Color(0xFFF5F6FA),
-                  borderRadius: BorderRadius.circular(8),
+              TextField(
+                controller: _endController,
+                decoration: InputDecoration(
+                  labelText: 'Varış Noktası',
+                  prefixIcon: Icon(Icons.circle, color: Colors.red, size: 16),
+                  filled: true,
+                  fillColor: Color(0xFFF5F6FA),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Icon(Icons.circle, color: Colors.red, size: 12),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF328EEB), // Mavi renk
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      'Varış noktası',
-                      style: TextStyle(
-                        color: Color(0xFF9CA3AF),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
+                  ),
+                  onPressed: _createRoute,
+                  icon: Icon(Icons.map, color: Colors.white),
+                  label: Text(
+                    'Rotayı Oluştur',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
